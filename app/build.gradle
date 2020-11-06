@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 //new k.kotov
@@ -40,5 +38,5 @@ dependencies {
     //new k.kotov
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation 'com.github.kirillkotov:Push-SDK-Android:v1.0.0.43-test5'
+    implementation 'com.github.kirillkotov:Push-SDK-Android:1.0.0.45'
 }

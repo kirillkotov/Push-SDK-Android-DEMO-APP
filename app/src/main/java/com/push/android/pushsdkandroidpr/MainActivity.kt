@@ -38,7 +38,6 @@ class ForegroundBackgroundListener(textBox: EditText) : LifecycleObserver {
     private val logTag: String = "ApplicationLog"
 
 
-
     //main class initialization
     init {
         this.textBox = textBox
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val apiServerKey = "test"
-    private val apiFingerprint = ""
+    private val apiFingerprint = "test_fingerprint"
 
     override fun onStart() {
         super.onStart()
@@ -108,9 +107,10 @@ class MainActivity : AppCompatActivity() {
         val hPlatformPushAdapterSdk =
             PushSDK(
                 context = this,
-                platform_branch = PushSdkParametersPublic.branchTestValue,
+                //platform_branch = PushSdkParametersPublic.branchMasterValue,
                 log_level = "debug",
-                push_style = 1
+                push_style = 1,
+                basePushURL = "https://example.com/push/{version}"
             )
 
         val permissions = arrayOf(android.Manifest.permission.READ_PHONE_STATE)
@@ -185,14 +185,14 @@ class MainActivity : AppCompatActivity() {
 
         button7.setOnClickListener {
             val sdkAnswer7: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_send_message_callback("23f2f2f2f2f", "Hello World")
+                hPlatformPushAdapterSdk.push_send_message_callback("test_mess_id", "Hello World")
             MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer7"
             textBoxForResultPrinting.setText(MessBuffer.buff)
         }
 
         button8.setOnClickListener {
             val sdkAnswer8: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_message_delivery_report("23f2f2f2f2f")
+                hPlatformPushAdapterSdk.push_message_delivery_report("test_mess_id")
             MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer8"
             textBoxForResultPrinting.setText(MessBuffer.buff)
         }
