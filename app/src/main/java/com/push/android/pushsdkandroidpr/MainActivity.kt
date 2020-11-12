@@ -8,7 +8,6 @@ import android.content.*
 import android.widget.Button
 import android.widget.EditText
 
-import kotlinx.android.synthetic.main.activity_main.*
 import androidx.core.app.ActivityCompat
 
 import androidx.lifecycle.LifecycleObserver
@@ -24,8 +23,9 @@ import com.push.android.pushsdkandroid.PushKPushMess
 
 import android.os.Bundle
 import com.google.firebase.iid.FirebaseInstanceId
+import com.push.android.pushsdkandroid.PushKFirebaseService
 import com.push.android.pushsdkandroid.PushSDK
-import com.push.android.pushsdkandroid.core.PushSdkParametersPublic
+
 
 object MessBuffer {
     var buff: String? = ""
@@ -62,6 +62,7 @@ class ForegroundBackgroundListener(textBox: EditText) : LifecycleObserver {
 
 class MainActivity : AppCompatActivity() {
 
+
     private val mPlugInReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
 
@@ -75,12 +76,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val apiServerKey = "test"
-    private val apiFingerprint = "test_fingerprint"
+    private val apiFingerprint = "key_fingerprint"
+    private val basePushURLApp = "https://example.com/api/2.3/"
 
     override fun onStart() {
         super.onStart()
         val filter = IntentFilter()
-        filter.addAction("com.push.android.pushsdkandroid.Push")
+        filter.addAction(PushKFirebaseService.DEFAULT_BROADCAST_ACTION)
         registerReceiver(mPlugInReceiver, filter)
         //val hPlatformPushAdapterSdk = HyberSDK(context = this, platform_branch = PushSdkParametersPublic.branchTestValue, log_level = "debug")
         //hPlatformPushAdapterSdk.hyber_check_queue()
@@ -109,8 +111,7 @@ class MainActivity : AppCompatActivity() {
                 context = this,
                 //platform_branch = PushSdkParametersPublic.branchMasterValue,
                 log_level = "debug",
-                push_style = 1,
-                basePushURL = "https://example.com/push/{version}"
+                basePushURL = basePushURLApp
             )
 
         val permissions = arrayOf(android.Manifest.permission.READ_PHONE_STATE)
@@ -125,18 +126,19 @@ class MainActivity : AppCompatActivity() {
         val button7: Button = findViewById(R.id.button7)    //message_callback
         val button8: Button = findViewById(R.id.button8)    //delivery_report
         val button9: Button = findViewById(R.id.button9)    //hyber_check_queue
+        val button10: Button = findViewById(R.id.button10)
         val button11: Button = findViewById(R.id.button11)  //Clear_textbox
         val button12: Button = findViewById(R.id.button12)
         val textBoxForResultPrinting: EditText = findViewById(R.id.editText2)
         val phoneNumberField: EditText = findViewById(R.id.editText)
         textBoxForResultPrinting.setSelection(0)
 
+
         ProcessLifecycleOwner.get()
             .lifecycle
             .addObserver(
                 ForegroundBackgroundListener(textBoxForResultPrinting)
             )
-
 
         button1.setOnClickListener {
             val phoneNumber: String = phoneNumberField.text.toString()

@@ -34,17 +34,14 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name="com.push.android.pushsdkandroid.PushKFirebaseService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service
-            android:name="com.push.android.pushsdkandroid.PushKMessaging"
+            android:name=".MyPushKFirebaseService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
         </service>
 
         <meta-data

@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //new k.kotov
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation 'com.github.kirillkotov:Push-SDK-Android:1.0.0.45'
+    implementation 'com.github.kirillkotov:Push-SDK-Android:1.0.0.47'
 }
