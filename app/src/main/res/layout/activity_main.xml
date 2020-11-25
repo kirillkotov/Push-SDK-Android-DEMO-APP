@@ -316,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginBottom="8dp"
-                android:hint="Base URL"
+                android:hint="Base URL (api 3.0 or above)"
                 app:counterEnabled="true"
                 app:counterMaxLength="100"
                 app:endIconMode="clear_text"
