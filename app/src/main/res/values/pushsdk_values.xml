@@ -1,8 +1,8 @@
 <resources>
 <!--    Set your client API key here-->
-    <string name="client_API_key" translatable="false">your_api_key</string>
+    <string name="client_API_key" translatable="false">demo_app_key</string>
 <!--    Set your app fingerprint here-->
-    <string name="app_fingerprint" translatable="false">your_app_fingerprint</string>
+    <string name="app_fingerprint" translatable="false">demo_app_fingerprint</string>
 
 <!--    Set your base URL here-->
     <string name="base_url" translatable="false">https://yourlink.com/api/3.0/</string>
