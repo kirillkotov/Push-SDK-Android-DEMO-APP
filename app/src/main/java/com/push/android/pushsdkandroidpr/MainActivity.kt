@@ -1,236 +1,124 @@
 package com.push.android.pushsdkandroidpr
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
-
-import android.util.Log
-import android.annotation.SuppressLint
-import android.content.*
-import android.widget.Button
-import android.widget.EditText
-
-import androidx.core.app.ActivityCompat
-
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ProcessLifecycleOwner
-import kotlin.properties.Delegates
-
-
-import com.push.android.pushsdkandroid.core.PushKFunAnswerRegister
-import com.push.android.pushsdkandroid.core.PushKFunAnswerGeneral
-import com.push.android.pushsdkandroid.PushKPushMess
-
 import android.os.Bundle
-import com.google.firebase.iid.FirebaseInstanceId
-import com.push.android.pushsdkandroid.PushKFirebaseService
+import android.util.Log
+import android.view.View
+import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
+import com.push.android.pushsdkandroidpr.databinding.ActivityMainBinding
 import com.push.android.pushsdkandroid.PushSDK
+import com.push.android.pushsdkandroid.core.ApiParams
 
-
-object MessBuffer {
-    var buff: String? = ""
-}
-
-class ForegroundBackgroundListener(textBox: EditText) : LifecycleObserver {
-
-    //any classes initialization
-    private var textBox: EditText by Delegates.notNull()
-    private val logTag: String = "ApplicationLog"
-
-
-    //main class initialization
-    init {
-        this.textBox = textBox
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun startSomething() {
-        Log.v(logTag, "APP IS ON FOREGROUND")
-
-        PushKPushMess.message?.let {
-            MessBuffer.buff = "${MessBuffer.buff} \n ${PushKPushMess.message}"
-            textBox.setText(MessBuffer.buff)
-            PushKPushMess.message = null
-        }
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun stopSomething() {
-        Log.v("ProcessLog", "APP IS IN BACKGROUND")
-    }
-}
+private lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-
     private val mPlugInReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-
-            PushKPushMess.message?.let {
-                val edtName: EditText = findViewById(R.id.editText2)
-                MessBuffer.buff = "${MessBuffer.buff} \n ${PushKPushMess.message}"
-                edtName.setText(MessBuffer.buff)
-                PushKPushMess.message = null
-            }
-        }
-    }
-
-    private val apiServerKey = "test"
-    private val apiFingerprint = "key_fingerprint"
-    private val basePushURLApp = "https://example.com/api/2.3/"
-
-    override fun onStart() {
-        super.onStart()
-        val filter = IntentFilter()
-        filter.addAction(PushKFirebaseService.DEFAULT_BROADCAST_ACTION)
-        registerReceiver(mPlugInReceiver, filter)
-        //val hPlatformPushAdapterSdk = HyberSDK(context = this, platform_branch = PushSdkParametersPublic.branchTestValue, log_level = "debug")
-        //hPlatformPushAdapterSdk.hyber_check_queue()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        println("Resumed App")
-        //val hPlatformPushAdapterSdk = HyberSDK(this, PushSdkParametersPublic.branchTestValue, "debug")
-        //hPlatformPushAdapterSdk.hyber_check_queue()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        unregisterReceiver(mPlugInReceiver)
-        //hPlatformPushAdapterSdk.hyber_check_queue()
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val hPlatformPushAdapterSdk =
-            PushSDK(
-                context = this,
-                //platform_branch = PushSdkParametersPublic.branchMasterValue,
-                log_level = "debug",
-                basePushURL = basePushURLApp
-            )
-
-        val permissions = arrayOf(android.Manifest.permission.READ_PHONE_STATE)
-        ActivityCompat.requestPermissions(this, permissions, 0)
-
-        //different form elements
-        val button1: Button = findViewById(R.id.button)
-        val button2: Button = findViewById(R.id.button2)
-        val button4: Button = findViewById(R.id.button4)
-        val button5: Button = findViewById(R.id.button5)
-        val button6: Button = findViewById(R.id.button6)
-        val button7: Button = findViewById(R.id.button7)    //message_callback
-        val button8: Button = findViewById(R.id.button8)    //delivery_report
-        val button9: Button = findViewById(R.id.button9)    //hyber_check_queue
-        val button10: Button = findViewById(R.id.button10)
-        val button11: Button = findViewById(R.id.button11)  //Clear_textbox
-        val button12: Button = findViewById(R.id.button12)
-        val textBoxForResultPrinting: EditText = findViewById(R.id.editText2)
-        val phoneNumberField: EditText = findViewById(R.id.editText)
-        textBoxForResultPrinting.setSelection(0)
-
-
-        ProcessLifecycleOwner.get()
-            .lifecycle
-            .addObserver(
-                ForegroundBackgroundListener(textBoxForResultPrinting)
-            )
-
-        button1.setOnClickListener {
-            val phoneNumber: String = phoneNumberField.text.toString()
-            println(phoneNumber)
-            hPlatformPushAdapterSdk.rewrite_msisdn(phoneNumber)
-            val registrationTest: PushKFunAnswerRegister =
-                hPlatformPushAdapterSdk.push_register_new(
-                    apiServerKey,
-                    apiFingerprint,
-                    phoneNumberField.text.toString(),
-                    "password"
-                )
-            MessBuffer.buff = "${MessBuffer.buff} \n $registrationTest"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-
-        button2.setOnClickListener {
-            val sdkAnswer2: PushKFunAnswerGeneral = hPlatformPushAdapterSdk.push_clear_current_device()
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer2"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-
-        button4.setOnClickListener {
-            println("Timestamp current: ${System.currentTimeMillis()}")
-            val sdkAnswer4: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_get_message_history(7200)
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer4"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        button5.setOnClickListener {
-            val sdkAnswer5: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_get_device_all_from_server()
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer5"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        button6.setOnClickListener {
-            val sdkAnswer: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_update_registration()
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        button7.setOnClickListener {
-            val sdkAnswer7: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_send_message_callback("test_mess_id", "Hello World")
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer7"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        button8.setOnClickListener {
-            val sdkAnswer8: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_message_delivery_report("test_mess_id")
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer8"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        //hyber_check_queue
-        button9.setOnClickListener {
-            val sdkAnswer9: PushKFunAnswerGeneral =
-                hPlatformPushAdapterSdk.push_check_queue()
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer9"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        //clear all
-        button10.setOnClickListener {
-            val sdkAnswer10: PushKFunAnswerGeneral = hPlatformPushAdapterSdk.push_clear_all_device()
-            MessBuffer.buff = "${MessBuffer.buff} \n $sdkAnswer10"
-            textBoxForResultPrinting.setText(MessBuffer.buff)
-        }
-
-        button11.setOnClickListener {
-            textBoxForResultPrinting.setText("")
-            PushKPushMess.message = ""
-            MessBuffer.buff = ""
-        }
-
-
-        button12.setOnClickListener {
-
-            FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
-                val token = instanceIdResult.token
-                if (token != "") {
-                    println(token)
+            when (intent.action) {
+                PushSDK.BROADCAST_QUEUE_INTENT_ACTION -> {
+                    intent.extras?.let {
+                        binding.myViewModel?.apply {
+                            postResponseMessage(it.getString(PushSDK.BROADCAST_QUEUE_EXTRA_NAME).toString())
+                        }
+                    }
+                }
+                PushSDK.BROADCAST_PUSH_DATA_INTENT_ACTION -> {
+                    intent.extras?.let {
+                        binding.myViewModel?.apply {
+                            postResponseMessage(it.getString(PushSDK.BROADCAST_PUSH_DATA_EXTRA_NAME).toString())
+                        }
+                    }
                 }
             }
         }
     }
 
+    private fun checkIntent(intent: Intent?) {
+        intent?.let {
+            if (it.action == PushSDK.NOTIFICATION_CLICK_INTENT_ACTION) {
+                binding.myViewModel?.apply {
+                    postResponseMessage(it.extras!!.getString(PushSDK.NOTIFICATION_CLICK_PUSH_DATA_EXTRA_NAME, "empty"))
+                    this@MainActivity.intent = null
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        checkIntent(intent)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val mainActivityViewModel = MainActivityViewModel(application)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding.myViewModel = mainActivityViewModel
+        binding.lifecycleOwner = this
+
+        //Observe the output and log it
+        mainActivityViewModel.responseMessages.observe(this, Observer {
+            Log.d("responseMessages", it)
+        })
+
+        mainActivityViewModel.systemMessages.observe(this, Observer {
+            when (it) {
+                "initSDK" -> {
+                    binding.credentials.visibility = View.GONE
+                }
+                "no_credentials" -> {
+                    Snackbar.make(
+                        binding.getRoot(),
+                        "Please provide credentials",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                "change_credentials" -> {
+                    binding.credentials.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val filter = IntentFilter()
+        filter.addAction(PushSDK.BROADCAST_PUSH_DATA_INTENT_ACTION)
+        filter.addAction(PushSDK.BROADCAST_QUEUE_INTENT_ACTION)
+        registerReceiver(mPlugInReceiver, filter)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //pushSDK.checkMessageQueue()
+        checkIntent(intent)
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onStop() {
+        unregisterReceiver(mPlugInReceiver)
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }
 

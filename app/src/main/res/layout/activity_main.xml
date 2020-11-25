@@ -1,150 +1,417 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    >
+    <data>
+        <variable
+            name="myViewModel"
+            type="com.push.android.pushsdkandroidpr.MainActivityViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="351dp"
-        android:layout_height="283dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="35dp"
-        tools:ignore="LabelFor,MissingConstraints"
-        android:autofillHints="" />
+    <FrameLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f0f0f0"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="36dp"
-        android:text="@string/button_registration"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f0f0f0"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:text="@string/button_clear_current"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp" />
+        <TextView
+            android:id="@+id/outputTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp"
+            android:text="Output:"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="116dp"
-        android:text="@string/button_Get_message_history"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp" />
+        <ScrollView
+            android:id="@+id/text_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/output_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditTextInputLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outputTitle">
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="112dp"
-        android:text="@string/button_Get_device_all"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/output_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{myViewModel.responseMessages}"
+                android:textIsSelectable="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="156dp"
-        android:text="@string/button_update_registration"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp" />
+        </ScrollView>
 
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="192dp"
-        android:text="@string/button_message_callback"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        tools:layout_editor_absoluteX="44dp"
-        tools:ignore="MissingConstraints" />
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/baseUrlEditTextInputLayout"-->
+<!--            style="@style/AppTheme.TextInputLayout.Style1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="4dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:hint="base URL"-->
+<!--            app:counterEnabled="true"-->
+<!--            app:counterMaxLength="50"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditTextInputLayout"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toLeftOf="@+id/btnChangeBaseUrl"-->
+<!--            app:layout_constraintWidth_percent="0.6">-->
 
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="96dp"
-        android:text="@string/button_delivery_report"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/baseUrlEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textUri"-->
+<!--                android:maxLength="50"-->
+<!--                android:text="@={myViewModel.mApiUrl}"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="60dp"
-        android:text="@string/button_check_queue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/btnChangeBaseUrl"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="4dp"-->
+<!--                    android:focusable="true"-->
+<!--                    android:onClick="@{()->myViewModel.changeUrlDebug()}"-->
+<!--                    android:text="Change URL"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/baseUrlEditTextInputLayout"-->
+<!--                    app:layout_constraintLeft_toRightOf="@+id/baseUrlEditTextInputLayout"-->
+<!--                    app:layout_constraintRight_toRightOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/baseUrlEditTextInputLayout" />-->
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="148dp"
-        android:autofillHints="375291234567"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/text_375291234567"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="LabelFor" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneNumberEditTextInputLayout"
+            style="@style/AppTheme.TextInputLayout.Style1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Phone number"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+            app:endIconMode="clear_text"
+            app:layout_constraintBottom_toTopOf="@+id/mainControlsContainer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintWidth_percent="0.6">
 
-    <Button
-        android:id="@+id/button10"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="196dp"
-        android:text="@string/button_clear_all"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="11"
+                android:text="@={myViewModel.mUserMsisdn}"
 
-    <Button
-        android:id="@+id/button11"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/button_Clear_textbox"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button12"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="220dp"
-        android:text="@string/button_test"
-        app:layout_constraintBottom_toBottomOf="@+id/button11"
-        app:layout_constraintEnd_toEndOf="parent" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnChangeNuber"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="4dp"-->
+<!--            android:focusable="true"-->
+<!--            android:onClick="@{()->myViewModel.changeNumber()}"-->
+<!--            android:text="Change number"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/phoneNumberEditTextInputLayout"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/phoneNumberEditTextInputLayout"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/phoneNumberEditTextInputLayout" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/phoneNumberPasswordEditTextInputLayout"-->
+<!--            style="@style/AppTheme.TextInputLayout.Style1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="4dp"-->
+<!--            android:hint="Phone password"-->
+<!--            app:endIconMode="password_toggle"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/mainControlsContainer"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintWidth_percent="0.6">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/phoneNumberPasswordEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@={myViewModel.mUserPassword}" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnChangeNuberPassword"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="4dp"-->
+<!--            android:onClick="@{()->myViewModel.changePassword()}"-->
+<!--            android:text="Change password"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/phoneNumberPasswordEditTextInputLayout"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/phoneNumberPasswordEditTextInputLayout"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/phoneNumberPasswordEditTextInputLayout" />-->
+
+        <LinearLayout
+            android:id="@+id/mainControlsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/buttonsContainer1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnL1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.registerDevice()}"
+                    android:text="Register device" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnL2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.updateRegistration()}"
+                    android:text="Update registration" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnL3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.unregisterDevice()}"
+                    android:text="Unregister current device" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnL4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.unregisterAllDevices()}"
+                    android:text="Unregister all devices" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnL5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.getAllDevices()}"
+                    android:text="Get all devices" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonsContainer2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnR1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.checkMessageQueue()}"
+                    android:text="Check queue" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnR2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.sendTestMessage()}"
+                    android:text="Send test message" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnR3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.getMessageDeliveryReport()}"
+                    android:text="Get message delivery report" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnR4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.getMessageHistory()}"
+                    android:text="MESSAGE HISTORY" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnR5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->myViewModel.clearOutput()}"
+                    android:text="Clear output" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/credentials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f0f0f0"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            tools:context=".MainActivity"
+            android:visibility="visible"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.8"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/baseUrlEditTextInputLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Please provide credentials for the SDK"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeStepGranularity="1dp"
+                android:gravity="center"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/baseUrlEditTextInputLayout"
+                style="@style/AppTheme.TextInputLayout.Style1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Base URL (api 3.0 or above)"
+                app:counterEnabled="true"
+                app:counterMaxLength="100"
+                app:endIconMode="clear_text"
+                app:layout_constraintBottom_toTopOf="@+id/clientApiKeyEditTextInputLayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintWidth_percent="0.6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/baseUrlEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:maxLength="100"
+                    android:text="@={myViewModel.mApiUrl}"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/clientApiKeyEditTextInputLayout"
+                style="@style/AppTheme.TextInputLayout.Style1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Client API key"
+                app:counterEnabled="true"
+                app:counterMaxLength="250"
+                app:endIconMode="clear_text"
+                app:layout_constraintBottom_toTopOf="@+id/appFingerprintEditTextInputLayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintWidth_percent="0.6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/clientApiKeyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="250"
+                    android:text="@={myViewModel.mClientApiKey}"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/appFingerprintEditTextInputLayout"
+                style="@style/AppTheme.TextInputLayout.Style1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="8dp"
+                android:hint="App fingerprint"
+                app:counterEnabled="true"
+                app:counterMaxLength="250"
+                app:endIconMode="clear_text"
+                app:layout_constraintBottom_toTopOf="@+id/btnInitSDK"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintWidth_percent="0.6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/appFingerprintEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="250"
+                    android:text="@={myViewModel.mAppFingerprint}"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInitSDK"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="Init SDK"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/btnResetCredentials"
+                        android:layout_marginBottom="30dp"
+                        android:onClick="@{()->myViewModel.initSDK()}"
+                        />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnResetCredentials"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="4dp"
+                android:text="Reset credentials"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/btnInitSDK"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="30dp"
+                android:onClick="@{()->myViewModel.resetCredentials()}"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

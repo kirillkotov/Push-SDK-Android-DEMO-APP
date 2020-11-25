@@ -1,17 +1,3 @@
 <resources>
     <string name="app_name">PushSDK-demo</string>
-    <string name="button_registration">register_device</string>
-    <string name="button_clear_current">clear_current</string>
-    <string name="button_Get_message_history">Get_message_history</string>
-    <string name="button_Get_device_all">Get_device_all</string>
-
-    <string name="button_update_registration">update_registration</string>
-    <string name="button_message_callback">message_callback</string>
-    <string name="button_delivery_report">delivery_report</string>
-    <string name="button_check_queue">check_queue</string>
-    <string name="text_375291234567">375291234567</string>
-    <string name="button_clear_all">Clear all</string>
-    <string name="button_Clear_textbox">Clear_textbox</string>
-    <string name="button_test">test</string>
-
 </resources>
