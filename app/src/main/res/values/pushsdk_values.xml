@@ -1,0 +1,16 @@
+<resources>
+<!--    Set your client API key here-->
+    <string name="client_API_key" translatable="false">your_api_key</string>
+<!--    Set your app fingerprint here-->
+    <string name="app_fingerprint" translatable="false">your_app_fingerprint</string>
+
+<!--    Set your base URL here-->
+    <string name="base_url" translatable="false">https://yourlink.com/api/3.0/</string>
+
+<!--    Rest is unused for now-->
+<!--    <string name="header_client_api_key" translatable="false"></string>-->
+<!--    <string name="header_app_fingerprint" translatable="false"></string>-->
+<!--    <string name="header_session_id" translatable="false"></string>-->
+<!--    <string name="header_timestamp" translatable="false"></string>-->
+<!--    <string name="header_authtoken" translatable="false"></string>-->
+</resources>

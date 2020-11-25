@@ -3,9 +3,12 @@ package com.push.android.pushsdkandroidpr
 import com.google.firebase.messaging.RemoteMessage
 import com.push.android.pushsdkandroid.PushKFirebaseService
 
-class MyPushKFirebaseService : PushKFirebaseService(
-    PARAM_NOTIFICATIONS_SUMMARY_TITLE_AND_TEXT = Pair("title", "text")
+class MyPushKMessagingService : PushKFirebaseService(
+    summaryNotificationTitleAndText = Pair("title", "text"),
+    notificationIconResourceId = android.R.drawable.ic_notification_overlay,
+    notificationStyle = NotificationStyle.LARGE_ICON
 ) {
+
     override fun onReceiveDataPush(appIsInForeground: Boolean, remoteMessage: RemoteMessage) {
         super.onReceiveDataPush(appIsInForeground, remoteMessage)
     }
@@ -25,4 +28,5 @@ class MyPushKFirebaseService : PushKFirebaseService(
             remoteMessage
         )
     }
+
 }
