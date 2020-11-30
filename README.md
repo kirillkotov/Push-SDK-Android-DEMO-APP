@@ -11,9 +11,12 @@ A firebase account and project (with cloud messaging enabled) are required to us
 
 ## Using the app
 ### Credentials screen
-| - | - |
-|---|---|
-| <img src="https://user-images.githubusercontent.com/34152018/100575978-c0f8f800-330f-11eb-8f21-1b39216ab7a2.png"> | Upon launching the app for the first time, you will be prompted to enter Api URL, Client API key and App fingerprint. You should have these values at this point, so it's pretty straightforward - enter the values then press "Init SDK" button. |
+<table>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/34152018/100575978-c0f8f800-330f-11eb-8f21-1b39216ab7a2.png"></td>
+    <td>Upon launching the app for the first time, you will be prompted to enter Api URL, Client API key and App fingerprint. You should have these values at this point, so it's pretty straightforward - enter the values then press "Init SDK" button.</td>
+  </tr>
+ </table>
 
 ### Main screen
 This screen allows you to interact with the SDK.
