@@ -24,4 +24,4 @@ Basic cycle:
 
 After following these steps, the app should now be able to receive push messages from the Messaging Hub.
 
-`Note: By default, system tray notifications will only be displayed when the app is in background. When the app is in foreground - it will only receive broadcasts, and show them in the output area.`
+>Note: By default, system tray notifications will only be displayed when the app is in background. When the app is in foreground - it will only receive broadcasts, and show them in the output area.
