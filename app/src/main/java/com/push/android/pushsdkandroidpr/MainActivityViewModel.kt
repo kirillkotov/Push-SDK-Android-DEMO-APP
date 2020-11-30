@@ -3,19 +3,16 @@ package com.push.android.pushsdkandroidpr
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
-import android.util.Log
 import androidx.core.content.edit
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
 import androidx.lifecycle.*
 import com.push.android.pushsdkandroid.PushSDK
-import com.push.android.pushsdkandroid.core.ApiParams
+import com.push.android.pushsdkandroidpr.utils.Event
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(
     application
 ) {
 
+    //didn't create repository because it's all simple anyways
     private lateinit var pushSDK : PushSDK
     private val preferences: SharedPreferences = getApplication<Application>().getSharedPreferences("demo", Context.MODE_PRIVATE)
 
@@ -38,10 +35,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
     }
 
     /**
-     * system messages (really didn't have time to put Event)
+     * system messages
      */
-    private val mSystemMessages = MutableLiveData<String>()
-    val systemMessages: LiveData<String>
+    private val mSystemMessages = MutableLiveData<Event<String>>()
+    val systemMessages: LiveData<Event<String>>
         get() = mSystemMessages
 
     /**
@@ -154,7 +151,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
                 putString("clientApiKey", mClientApiKey.value)
                 putString("appFingerprint", mAppFingerprint.value)
             }
-            mSystemMessages.postValue("initSDK")
+            mSystemMessages.postValue(
+                Event(
+                    "initSDK"
+                )
+            )
             //init the SDK using constructor
             pushSDK = PushSDK(
                 getApplication(),
@@ -163,7 +164,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
             )
         }
         else {
-            mSystemMessages.postValue("no_credentials")
+            mSystemMessages.postValue(
+                Event(
+                    "no_credentials"
+                )
+            )
         }
     }
 

@@ -79,18 +79,20 @@ class MainActivity : AppCompatActivity() {
             Log.d("responseMessages", it)
         })
 
-        //Observe system messages
-        mainActivityViewModel.systemMessages.observe(this, Observer {
-            when (it) {
-                "initSDK" -> {
-                    binding.credentials.visibility = View.GONE
-                }
-                "no_credentials" -> {
-                    Snackbar.make(
-                        binding.getRoot(),
-                        "Please provide credentials",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+        //Observe and handle events
+        mainActivityViewModel.systemMessages.observe(this, Observer {event ->
+            event.getContentIfNotHandled()?.let {
+                when (it) {
+                    "initSDK" -> {
+                        binding.credentials.visibility = View.GONE
+                    }
+                    "no_credentials" -> {
+                        Snackbar.make(
+                            binding.getRoot(),
+                            "Please provide credentials",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         })

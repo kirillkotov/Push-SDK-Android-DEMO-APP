@@ -12,6 +12,10 @@ class MyPushKMessagingService : PushKFirebaseService(
     notificationStyle = NotificationStyle.LARGE_ICON
 ) {
 
+    ///////////////////////////////////////////////
+    // PushKFirebaseService methods
+    ///////////////////////////////////////////////
+
     /**
      * Called when data push is received from the Messaging Hub
      */
@@ -40,6 +44,10 @@ class MyPushKMessagingService : PushKFirebaseService(
             remoteMessage
         )
     }
+
+    ///////////////////////////////////////////////
+    // FirebaseMessagingService methods
+    ///////////////////////////////////////////////
 
     /**
      * Called when ANY message received
