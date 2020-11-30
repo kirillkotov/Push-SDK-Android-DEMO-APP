@@ -8,13 +8,14 @@ import androidx.lifecycle.*
 import com.push.android.pushsdkandroid.PushSDK
 import com.push.android.pushsdkandroidpr.utils.Event
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(
+class MainActivityViewModel(application: Application, private val preferences: SharedPreferences) : AndroidViewModel(
     application
 ) {
 
+    //exposing ViewModel to SharedPreferences
     //didn't create repository because it's all simple anyways
+
     private lateinit var pushSDK : PushSDK
-    private val preferences: SharedPreferences = getApplication<Application>().getSharedPreferences("demo", Context.MODE_PRIVATE)
 
     /**
      * Stuff to show in the output

@@ -1,9 +1,7 @@
 package com.push.android.pushsdkandroidpr
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.Application
+import android.content.*
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,10 +10,12 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.push.android.pushsdkandroidpr.databinding.ActivityMainBinding
 import com.push.android.pushsdkandroid.PushSDK
 import com.push.android.pushsdkandroid.core.ApiParams
+import com.push.android.pushsdkandroidpr.utils.ViewModelFactory
 
 private lateinit var binding: ActivityMainBinding
 
@@ -69,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainActivityViewModel = MainActivityViewModel(application)
+        val preferences: SharedPreferences = getSharedPreferences("demo", Context.MODE_PRIVATE)
+        val factory = ViewModelFactory(application, preferences)
+        val mainActivityViewModel =
+            ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.myViewModel = mainActivityViewModel
         binding.lifecycleOwner = this
