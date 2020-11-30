@@ -251,7 +251,7 @@ class MainActivityViewModel(application: Application, private val preferences: S
     }
 
     /**
-     * Change your device phone number
+     * Change your device phone number (unused)
      */
     fun changeNumber() {
         val answer = pushSDK.rewriteMsisdn(userMsisdn.value.toString())
