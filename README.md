@@ -7,7 +7,7 @@
 
 The values can be obtained through PushSDK representatives.
 
-A firebase account and project (with cloud messaging enabled) are required to use the PushSDK. For demo purposes, a demo firebase project is already connected to the app, so the app will be receiving push messages through the firebase project.
+>Note: A firebase account and project (with cloud messaging enabled) are required to use the PushSDK. For demo purposes, a demo firebase project is already connected to the app, so the app will be receiving push messages through the firebase project.
 
 ## Using the app
 ### Credentials screen
