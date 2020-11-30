@@ -18,9 +18,9 @@ This screen allows you to interact with the SDK.
 
 Basic cycle:
 
-2. First, register your device by pressing "Register device"
-2. Second, press "Update registration" to let the SDK set and update you current FCM token
-2. Verify that your device is registered by pressing "Get all devices" button
+1. First, register your device by pressing "Register device"
+1. Second, press "Update registration" to let the SDK set and update you current FCM token
+1. Verify that your device is registered by pressing "Get all devices" button
 
 After following these steps, the app should now be able to receive push messages from the Messaging Hub.
 
