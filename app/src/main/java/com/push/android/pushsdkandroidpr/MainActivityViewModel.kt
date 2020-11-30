@@ -17,6 +17,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
 ) {
 
     private lateinit var pushSDK : PushSDK
+    private val preferences: SharedPreferences = getApplication<Application>().getSharedPreferences("demo", Context.MODE_PRIVATE)
 
     /**
      * Stuff to show in the output
@@ -27,6 +28,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
 
     fun postResponseMessage(msg: String) {
         mResponseMessages.postValue(msg)
+    }
+
+    /**
+     * Clear the output text area
+     */
+    fun clearOutput() {
+        postResponseMessage("Empty yet")
     }
 
     /**
@@ -44,14 +52,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
         get() = mApiUrl
 
     /**
-     * api URL
+     * client API key (given to you)
      */
     val mClientApiKey = MutableLiveData<String>()
     val ClientApiKey: LiveData<String>
         get() = mClientApiKey
 
     /**
-     * api URL
+     * app fingerprint (given to you)
      */
     val mAppFingerprint = MutableLiveData<String>()
     val AppFingerprint: LiveData<String>
@@ -65,13 +73,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
         get() = mUserMsisdn
 
     /**
-     * Device password
+     * Device password (unused)
      */
     val mUserPassword = MutableLiveData<String>()
     val userPassword: LiveData<String>
         get() = mUserPassword
-
-    val preferences: SharedPreferences = getApplication<Application>().getSharedPreferences("demo", Context.MODE_PRIVATE)
 
     init {
         //mApiUrl.value = "https://example.com/api/3.0/"
@@ -134,13 +140,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
         }
     }
 
-    /**
-     * Change credentials
-     */
-    fun changeCredentials() {
-        resetCredentials()
-        mSystemMessages.postValue("change_credentials")
-    }
+    ////////////////////////////////////////
+    // SDK methods
+    ////////////////////////////////////////
 
     /**
      * Init the PushSDK
@@ -153,58 +155,16 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
                 putString("appFingerprint", mAppFingerprint.value)
             }
             mSystemMessages.postValue("initSDK")
+            //init the SDK using constructor
             pushSDK = PushSDK(
                 getApplication(),
-                //mApiUrl.value ?: "",
-                preferences.getString("url", "")!!,
+                preferences.getString("url", "").toString(),
                 PushSDK.LogLevels.PUSHSDK_LOG_LEVEL_DEBUG
             )
         }
         else {
             mSystemMessages.postValue("no_credentials")
         }
-        //val apiParams = ApiParams()
-        //apiParams.baseURL = ""
-//        try {
-//            getString(R.string.base_url).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.baseURL = this
-//                }
-//            }
-//            getString(R.string.header_client_api_key).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.headerClientApiKey = this
-//                }
-//            }
-//            getString(R.string.header_app_fingerprint).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.headerAppFingerprint = this
-//                }
-//            }
-//            getString(R.string.header_session_id).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.headerSessionId = this
-//                }
-//            }
-//            getString(R.string.header_timestamp).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.headerTimestamp = this
-//                }
-//            }
-//            getString(R.string.header_authtoken).apply {
-//                if (isNotEmpty()) {
-//                    apiParams.headerAuthToken = this
-//                }
-//            }
-//        }
-//        catch (e: Resources.NotFoundException) {
-//            Log.d("PushSDKinit", "headers are not specified, skipping")
-//        }
-
-
-        //pushSDK = PushSDK(getApplication(), mApiUrl.value ?: "", PushSDK.LogLevels.PUSHSDK_LOG_LEVEL_DEBUG)
-
-        //System.out.println("application.isRestricted ${application.isRestricted}")
     }
 
     /**
@@ -212,8 +172,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
      */
     fun registerDevice() {
         val answer = pushSDK.registerNewDevice(
-            //mClientApiKey.value ?: "",
-            //mAppFingerprint.value ?: "",
             preferences.getString("clientApiKey", "")!!,
             preferences.getString("appFingerprint", "")!!,
             mUserMsisdn.value ?: "",
@@ -255,7 +213,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
     }
 
     /**
-     * Check message queue
+     * Check message queue, if queue is not empty - it will be sent via broadcast
      */
     fun checkMessageQueue() {
         val answer = pushSDK.checkMessageQueue()
@@ -294,14 +252,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
         postResponseMessage(answer.toString())
     }
 
-    /**
-     * Change URL (debug only)
-     */
-    fun changeUrlDebug() {
-        unregisterDevice()
-
-    }
-
 //    /**
 //     * Change your device's password
 //     */
@@ -309,11 +259,4 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(
 //        val answer = pushSDK.rewritePassword(userPassword.value.toString())
 //        postResponseMessage(answer.toString())
 //    }
-
-    /**
-     * Clear the output text area
-     */
-    fun clearOutput() {
-        postResponseMessage("Empty yet")
-    }
 }
