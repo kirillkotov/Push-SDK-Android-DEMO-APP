@@ -1,9 +1,7 @@
 package com.push.android.pushsdkandroidpr
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.Application
+import android.content.*
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,15 +10,20 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.push.android.pushsdkandroidpr.databinding.ActivityMainBinding
 import com.push.android.pushsdkandroid.PushSDK
 import com.push.android.pushsdkandroid.core.ApiParams
+import com.push.android.pushsdkandroidpr.utils.ViewModelFactory
 
 private lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * BroadcastReceiver to receive PushSDK message broadcasts
+     */
     private val mPlugInReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
@@ -42,12 +45,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Check intent to find out if user clicked the notification
+     */
     private fun checkIntent(intent: Intent?) {
         intent?.let {
             if (it.action == PushSDK.NOTIFICATION_CLICK_INTENT_ACTION) {
                 binding.myViewModel?.apply {
-                    postResponseMessage(it.extras!!.getString(PushSDK.NOTIFICATION_CLICK_PUSH_DATA_EXTRA_NAME, "empty"))
-                    this@MainActivity.intent = null
+                    it.extras?.let {extras ->
+                        postResponseMessage(extras.getString(PushSDK.NOTIFICATION_CLICK_PUSH_DATA_EXTRA_NAME, "empty"))
+                        this@MainActivity.intent = null
+                    }
                 }
             }
         }
@@ -61,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainActivityViewModel = MainActivityViewModel(application)
+        val preferences: SharedPreferences = getSharedPreferences("demo", Context.MODE_PRIVATE)
+        val factory = ViewModelFactory(application, preferences)
+        val mainActivityViewModel =
+            ViewModelProvider(this, factory).get(MainActivityViewModel::class.java)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.myViewModel = mainActivityViewModel
         binding.lifecycleOwner = this
@@ -71,20 +82,20 @@ class MainActivity : AppCompatActivity() {
             Log.d("responseMessages", it)
         })
 
-        mainActivityViewModel.systemMessages.observe(this, Observer {
-            when (it) {
-                "initSDK" -> {
-                    binding.credentials.visibility = View.GONE
-                }
-                "no_credentials" -> {
-                    Snackbar.make(
-                        binding.getRoot(),
-                        "Please provide credentials",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                "change_credentials" -> {
-                    binding.credentials.visibility = View.VISIBLE
+        //Observe and handle events
+        mainActivityViewModel.systemMessages.observe(this, Observer {event ->
+            event.getContentIfNotHandled()?.let {
+                when (it) {
+                    "initSDK" -> {
+                        binding.credentials.visibility = View.GONE
+                    }
+                    "no_credentials" -> {
+                        Snackbar.make(
+                            binding.getRoot(),
+                            "Please provide credentials",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         })
@@ -92,6 +103,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        //register broadcast receiver
         val filter = IntentFilter()
         filter.addAction(PushSDK.BROADCAST_PUSH_DATA_INTENT_ACTION)
         filter.addAction(PushSDK.BROADCAST_QUEUE_INTENT_ACTION)
@@ -104,7 +116,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //pushSDK.checkMessageQueue()
         checkIntent(intent)
     }
 
@@ -113,6 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
+        //unregister broadcast receiver
         unregisterReceiver(mPlugInReceiver)
         super.onStop()
     }
