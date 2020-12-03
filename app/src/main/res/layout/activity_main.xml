@@ -116,7 +116,7 @@
             android:layout_marginBottom="8dp"
             android:hint="Phone number"
             app:counterEnabled="true"
-            app:counterMaxLength="11"
+            app:counterMaxLength="14"
             app:endIconMode="clear_text"
             app:layout_constraintBottom_toTopOf="@+id/mainControlsContainer"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -127,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="11"
+                android:maxLength="14"
                 android:text="@={myViewModel.mUserMsisdn}"
 
                 />
