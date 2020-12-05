@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.push.android.pushsdkandroidpr.databinding.ActivityMainBinding
 import com.push.android.pushsdkandroid.PushSDK
-import com.push.android.pushsdkandroid.core.ApiParams
 import com.push.android.pushsdkandroidpr.utils.ViewModelFactory
 
 private lateinit var binding: ActivityMainBinding

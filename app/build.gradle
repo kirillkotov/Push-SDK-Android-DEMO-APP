@@ -47,8 +47,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
 
 
-    //implementation 'com.github.kirillkotov:Push-SDK-Android:bb6cb67bcf19619f09e802efca6afd119502a90c'
-    implementation 'com.github.kirillkotov:Push-SDK-Android:v1.0.0.51'
+    //implementation 'com.github.kirillkotov:Push-SDK-Android:5729be2375bd798d1694d7c3d62da38171a4eefa'
+    implementation 'com.github.kirillkotov:Push-SDK-Android:v1.0.0.52-RELEASE'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
