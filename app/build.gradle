@@ -48,7 +48,7 @@ dependencies {
 
 
     //implementation 'com.github.kirillkotov:Push-SDK-Android:5729be2375bd798d1694d7c3d62da38171a4eefa'
-    implementation 'com.github.kirillkotov:Push-SDK-Android:v1.0.0.52-RELEASE'
+    implementation 'com.github.kirillkotov:Push-SDK-Android:v1.0.0.54-RELEASE'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
