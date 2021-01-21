@@ -1,5 +1,6 @@
 package com.push.android.pushsdkandroidpr
 
+import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import com.push.android.pushsdkandroid.PushKFirebaseService
 
@@ -8,13 +9,21 @@ import com.push.android.pushsdkandroid.PushKFirebaseService
  */
 class MyPushKMessagingService : PushKFirebaseService(
     summaryNotificationTitleAndText = Pair("title", "text"),
-    notificationIconResourceId = android.R.drawable.ic_notification_overlay,
-    notificationStyle = NotificationStyle.LARGE_ICON
+    notificationIconResourceId = android.R.drawable.ic_notification_overlay
 ) {
 
     ///////////////////////////////////////////////
     // PushKFirebaseService methods
     ///////////////////////////////////////////////
+
+    override fun setNotificationStyle(
+        notificationConstruct: NotificationCompat.Builder,
+        data: Map<String, String>,
+        notificationStyle: NotificationStyle
+    ) {
+        super.setNotificationStyle(notificationConstruct, data, notificationStyle = NotificationStyle.BIG_TEXT)
+        //super.setNotificationStyle(notificationConstruct, data, notificationStyle = NotificationStyle.BIG_PICTURE)
+    }
 
     /**
      * Called when data push is received from the Messaging Hub
