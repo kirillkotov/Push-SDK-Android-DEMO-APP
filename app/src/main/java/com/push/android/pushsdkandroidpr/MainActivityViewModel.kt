@@ -235,10 +235,18 @@ class MainActivityViewModel(application: Application, private val preferences: S
     }
 
     /**
-     * Get delivery report for a message
+     * Send delivery report for a message
      */
-    fun getMessageDeliveryReport() {
-        val answer = pushSDK.getMessageDeliveryReport("message_id")
+    fun sendMessageDeliveryReport() {
+        sendMessageDeliveryReport("message_id")
+    }
+
+    /**
+     * Send delivery report for a message
+     * @param messageId message ID
+     */
+    fun sendMessageDeliveryReport(messageId: String) {
+        val answer = pushSDK.sendMessageDeliveryReport("message_id")
         postResponseMessage(answer.toString())
     }
 

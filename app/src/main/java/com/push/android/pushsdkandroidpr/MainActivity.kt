@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
                     intent.extras?.let {
                         binding.myViewModel?.apply {
                             postResponseMessage(it.getString(PushSDK.BROADCAST_QUEUE_EXTRA_NAME).toString())
+                            //here you could send delivery reports for all the the message ids
                         }
                     }
                 }
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
                     intent.extras?.let {
                         binding.myViewModel?.apply {
                             postResponseMessage(it.getString(PushSDK.BROADCAST_PUSH_DATA_EXTRA_NAME).toString())
+                            //here you could send a delivery report for the message id
+                            //with PushSDK
+                            //mainActivityViewModel.sendMessageDeliveryReport(message_id)
                         }
                     }
                 }

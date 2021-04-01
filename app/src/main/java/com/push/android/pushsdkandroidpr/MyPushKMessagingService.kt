@@ -3,54 +3,99 @@ package com.push.android.pushsdkandroidpr
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import com.push.android.pushsdkandroid.PushKFirebaseService
+import com.push.android.pushsdkandroid.managers.PushSdkNotificationManager
 
 /**
  * PushKFirebaseService, can also be used as a regular FirebaseMessagingService
  */
+//class MyPushKMessagingService : PushKFirebaseService(
+//    summaryNotificationTitleAndText = Pair("title", "text"),
+//    notificationIconResourceId = android.R.drawable.ic_notification_overlay
+//) {
 class MyPushKMessagingService : PushKFirebaseService(
-    summaryNotificationTitleAndText = Pair("title", "text"),
-    notificationIconResourceId = android.R.drawable.ic_notification_overlay
+        summaryNotificationTitleAndText = Pair("title", "text"),
+        notificationIconResourceId = android.R.drawable.ic_notification_overlay
 ) {
-
-    ///////////////////////////////////////////////
-    // PushKFirebaseService methods
-    ///////////////////////////////////////////////
-
-    override fun setNotificationStyle(
-        notificationConstruct: NotificationCompat.Builder,
-        data: Map<String, String>,
-        notificationStyle: NotificationStyle
-    ) {
-        super.setNotificationStyle(notificationConstruct, data, notificationStyle = NotificationStyle.BIG_TEXT)
-        //super.setNotificationStyle(notificationConstruct, data, notificationStyle = NotificationStyle.BIG_PICTURE)
-    }
 
     /**
      * Called when data push is received from the Messaging Hub
      */
-    override fun onReceiveDataPush(appIsInForeground: Boolean, remoteMessage: RemoteMessage) {
-        super.onReceiveDataPush(appIsInForeground, remoteMessage)
-    }
-
-    /**
-     * Called when notification is displayed (Messaging hub only)
-     */
-    override fun onDisplayNotification(appIsInForeground: Boolean, remoteMessage: RemoteMessage) {
-        super.onDisplayNotification(appIsInForeground, remoteMessage)
-    }
-
-    /**
-     * Called when notification should be displayed, but will not be (Messaging hub only)
-     */
-    override fun onUnableToDisplayNotification(
-        areNotificationsEnabled: Boolean,
-        appIsInForeground: Boolean,
-        remoteMessage: RemoteMessage
+    override fun onReceiveDataPush(
+            appIsInForeground: Boolean,
+            isDoNotDisturbModeActive: Boolean,
+            areNotificationsEnabled: Boolean,
+            isNotificationChannelMuted: Boolean,
+            remoteMessage: RemoteMessage
     ) {
-        super.onUnableToDisplayNotification(
-            areNotificationsEnabled,
-            appIsInForeground,
-            remoteMessage
+        super.onReceiveDataPush(
+                appIsInForeground,
+                isDoNotDisturbModeActive,
+                areNotificationsEnabled,
+                isNotificationChannelMuted,
+                remoteMessage
+        )
+
+        //can be used to configure, for example set "isDoNotDisturbModeActive" to false,
+        // to send notifications in "Do not disturb mode" anyways
+//        super.onReceiveDataPush(
+//            appIsInForeground = appIsInForeground,
+//            isDoNotDisturbModeActive = false,
+//            areNotificationsEnabled = areNotificationsEnabled,
+//            isNotificationChannelMuted = isNotificationChannelMuted,
+//            remoteMessage = remoteMessage
+//        )
+    }
+
+    /**
+     * Prepares NotificationCompat.Builder object for showing
+     */
+    override fun prepareNotification(data: Map<String, String>): NotificationCompat.Builder? {
+        return super.prepareNotification(data)
+        //can customize NotificationCompat.Builder object here, e.g.:
+//        val notificationConstruct = pushSdkNotificationManager.constructNotification(data, PushSdkNotificationManager.NotificationStyle.NO_STYLE)
+//        notificationConstruct?.apply {
+//            setContentTitle("some new text")
+//            setContentText("some new text")
+//            setStyle(NotificationCompat.BigTextStyle())
+//        }
+//        return notificationConstruct
+    }
+
+    /**
+     * Callback - when notification is sent
+     */
+    override fun onNotificationSent(
+            appIsInForeground: Boolean,
+            isDoNotDisturbModeActive: Boolean,
+            areNotificationsEnabled: Boolean,
+            isNotificationChannelMuted: Boolean,
+            remoteMessage: RemoteMessage
+    ) {
+        super.onNotificationSent(
+                appIsInForeground,
+                isDoNotDisturbModeActive,
+                areNotificationsEnabled,
+                isNotificationChannelMuted,
+                remoteMessage
+        )
+    }
+
+    /**
+     * Callback - when notification will not be sent
+     */
+    override fun onNotificationWontBeSent(
+            appIsInForeground: Boolean,
+            isDoNotDisturbModeActive: Boolean,
+            areNotificationsEnabled: Boolean,
+            isNotificationChannelMuted: Boolean,
+            remoteMessage: RemoteMessage
+    ) {
+        super.onNotificationWontBeSent(
+                appIsInForeground,
+                isDoNotDisturbModeActive,
+                areNotificationsEnabled,
+                isNotificationChannelMuted,
+                remoteMessage
         )
     }
 
@@ -62,6 +107,7 @@ class MyPushKMessagingService : PushKFirebaseService(
      * Called when ANY message received
      */
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        //remoteMessage.data.toString()
         super.onMessageReceived(remoteMessage)
         //put your code here to use as default FirebaseMessagingService method
     }
